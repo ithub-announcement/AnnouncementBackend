@@ -15,5 +15,5 @@ public class SortDto {
 
     private boolean paranoid;
 
-    private String sortDir;
+    private String sortDir; // asc для сортировки по возрастанию
 }

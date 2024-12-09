@@ -161,7 +161,7 @@ public class TagService {
     }
 
     /**
-     * Вспомогательный метод для Возврата
+     * Вспомогательный метод для Возврата с сервера
      */
 
     private TagResponse convertToTagResponse(Tag tag) {
