@@ -1,6 +1,7 @@
 package it.college.AnnouncementBackend.routes.review.controller;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
+import it.college.AnnouncementBackend.routes.review.servicies.ReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -10,4 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/review")
 @RequiredArgsConstructor
 public class ReviewController {
+
+    private final ReviewService service;
 }
