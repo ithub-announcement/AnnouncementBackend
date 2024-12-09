@@ -37,4 +37,7 @@ public class Announcement {
 
     @ManyToMany
     private List<Tag> tags;
+
+    @Column
+    private String reason;
 }
