@@ -1,6 +1,6 @@
 package it.college.AnnouncementBackend.routes.tags.models;
 
-import it.college.AnnouncementBackend.core.domain.model.Log;
+import it.college.AnnouncementBackend.core.domain.model.entity.Log;
 import jakarta.persistence.*;
 import lombok.Data;
 

@@ -2,8 +2,8 @@ package it.college.AnnouncementBackend.routes.tags.servicies;
 
 import it.college.AnnouncementBackend.core.config.Mapper;
 import it.college.AnnouncementBackend.core.domain.dto.SortDto;
-import it.college.AnnouncementBackend.core.domain.model.ActionType;
-import it.college.AnnouncementBackend.core.domain.model.Log;
+import it.college.AnnouncementBackend.core.domain.model.entity.ActionType;
+import it.college.AnnouncementBackend.core.domain.model.entity.Log;
 import it.college.AnnouncementBackend.routes.tags.models.*;
 import it.college.AnnouncementBackend.routes.tags.repositories.TagRepository;
 import it.college.AnnouncementBackend.routes.tags.repositories.TagSpecification;

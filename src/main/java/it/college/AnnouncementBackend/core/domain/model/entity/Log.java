@@ -1,4 +1,4 @@
-package it.college.AnnouncementBackend.core.domain.model;
+package it.college.AnnouncementBackend.core.domain.model.entity;
 
 import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;
