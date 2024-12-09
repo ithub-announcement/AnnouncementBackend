@@ -5,7 +5,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import it.college.AnnouncementBackend.routes.drafts.model.DraftPayload;
 import it.college.AnnouncementBackend.routes.drafts.servicies.DraftService;
 import lombok.RequiredArgsConstructor;
-import org.aspectj.weaver.patterns.IToken;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

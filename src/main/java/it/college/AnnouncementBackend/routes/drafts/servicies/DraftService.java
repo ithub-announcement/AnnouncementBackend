@@ -39,7 +39,7 @@ public class DraftService {
 
     public ResponseEntity findAllDraftByAuthor(String token){
         try {
-            return new ResponseEntity<>(this.repository.findAllByAuthorIdAndStatus(token, AStatus.Draft), HttpStatus.OK);
+            return new ResponseEntity<>(this.repository.findAllByAuthorIDAndStatus(token, AStatus.Draft), HttpStatus.OK);
         }catch (Exception err){
             System.err.println("Ошибка при получение всех черновиков - " + err.getMessage());
             return ResponseEntity.internalServerError().build();
