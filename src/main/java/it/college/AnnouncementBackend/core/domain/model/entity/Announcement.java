@@ -5,9 +5,10 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.UuidGenerator;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Data
 @Entity
@@ -16,9 +17,9 @@ import java.time.LocalDateTime;
 public class Announcement {
     @Id
     @GeneratedValue(generator = "UUID")
-    @UuidGenerator
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     @Column(unique = true, nullable = false, updatable = false)
-    private long UUID;
+    private UUID UUID;
 
     @Column
     private String jsonContent;

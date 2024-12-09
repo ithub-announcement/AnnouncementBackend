@@ -4,8 +4,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import it.college.AnnouncementBackend.routes.drafts.model.DraftPayload;
 import it.college.AnnouncementBackend.routes.drafts.servicies.DraftService;
-import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import org.aspectj.weaver.patterns.IToken;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +20,7 @@ public class DraftController {
     @GetMapping
     @Operation(summary = "Получить все черновики пользователя")
     public ResponseEntity findAllDraftByAuthorId(@RequestHeader("Authorization") String authorization){
-        return null;
+        return this.service.findAllDraftByAuthor(authorization);
     }
 
     @GetMapping("/{uuid}")
@@ -28,7 +28,7 @@ public class DraftController {
     public ResponseEntity findDraftByUUID(@RequestHeader("Authorization") String authorization,
                                           @RequestParam("uuid") String uuid)
     {
-        return null;
+        return this.service.findDraftByUUID(authorization, uuid);
     }
 
     @PostMapping
@@ -37,7 +37,7 @@ public class DraftController {
                                     @RequestParam(required = false) String uuid,
                                     @RequestBody DraftPayload payload)
     {
-        return null;
+        return this.service.saveDraft(authorization, uuid, payload);
     }
 
     @DeleteMapping("/{uuid}")
@@ -45,7 +45,7 @@ public class DraftController {
     public ResponseEntity deleteDraftByUUID(@RequestHeader("Authorization") String authorization,
                                             @RequestParam("uuid") String uuid)
     {
-        return null;
+        return this.service.deleteDraftByUUID(authorization, uuid);
     }
 
 }
