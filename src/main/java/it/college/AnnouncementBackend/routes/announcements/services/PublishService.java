@@ -50,7 +50,7 @@ public class PublishService {
      * Перенести в архив объявление, если подходящая дата
      */
 
-    @Scheduled(cron = "0 0 2 * * ?") // Каждый день в 4 часа ночи
+    @Scheduled(cron = "0 0 2 * * ?") // Каждый день в 2 часа ночи
     public void TaskToArchive(){
         try {
             List<Announcement> announcements = this.repository.findAllByStatus(AStatus.WaitPublish);
