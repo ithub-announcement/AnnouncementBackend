@@ -25,7 +25,7 @@ public class DraftController {
     @GetMapping("/{uuid}")
     @Operation(summary = "Получить черновик по UUID")
     public ResponseEntity findDraftByUUID(@RequestHeader("Authorization") String authorization,
-                                          @RequestParam("uuid") String uuid)
+                                          @PathVariable("uuid") String uuid)
     {
         return this.service.findDraftByUUID(authorization, uuid);
     }
@@ -33,7 +33,7 @@ public class DraftController {
     @PostMapping
     @Operation(summary = "Сохранить черновик")
     public ResponseEntity saveDraft(@RequestHeader("Authorization") String authorization,
-                                    @RequestParam(required = false) String uuid,
+                                    @PathVariable(required = false) String uuid,
                                     @RequestBody DraftPayload payload)
     {
         return this.service.saveDraft(authorization, uuid, payload);
@@ -42,7 +42,7 @@ public class DraftController {
     @DeleteMapping("/{uuid}")
     @Operation(summary = "Удалить черновик")
     public ResponseEntity deleteDraftByUUID(@RequestHeader("Authorization") String authorization,
-                                            @RequestParam("uuid") String uuid)
+                                            @PathVariable("uuid") String uuid)
     {
         return this.service.deleteDraftByUUID(authorization, uuid);
     }

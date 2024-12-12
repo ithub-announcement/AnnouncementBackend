@@ -13,7 +13,7 @@ public class SortDto {
 
     private String search;
 
-    private boolean paranoid;
+    private List<Long> tags;
 
     private String sortDir; // asc для сортировки по возрастанию
 }

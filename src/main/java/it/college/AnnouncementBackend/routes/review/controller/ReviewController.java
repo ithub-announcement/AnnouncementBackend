@@ -16,10 +16,10 @@ public class ReviewController {
 
     private final ReviewService service;
 
-    @PutMapping("/uuid")
+    @PutMapping("/{uuid}")
     @Operation(summary = "Отправить на проверку черновик")
     public ResponseEntity sentToReview(@RequestHeader("Authorization") String authorization,
-                                       @RequestParam("uuid") String uuid,
+                                       @PathVariable("uuid") String uuid,
                                        @RequestBody ReviewPayload payload){
         return this.service.sentToReview(authorization, uuid, payload);
     }
@@ -27,14 +27,14 @@ public class ReviewController {
     @PostMapping("/accept/{uuid}")
     @Operation(summary = "Принять черновик")
     public ResponseEntity accept(@RequestHeader("Authorization") String authorization,
-                                 @RequestParam("uuid") String uuid){
+                                 @PathVariable("uuid") String uuid){
         return this.service.acceptToPublish(authorization, uuid);
     }
 
     @PostMapping("/reject/{uuid}")
     @Operation(summary = "Отклонить черновик")
     public ResponseEntity reject(@RequestHeader("Authorization") String authorization,
-                                 @RequestParam("uuid") String uuid,
+                                 @PathVariable("uuid") String uuid,
                                  @RequestBody String reason){
         return this.service.rejectToPublish(authorization, uuid, reason);
     }
