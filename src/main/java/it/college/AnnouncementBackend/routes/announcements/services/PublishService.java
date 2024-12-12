@@ -45,4 +45,24 @@ public class PublishService {
             System.err.println("Ошибка при выставление объявление - " + err.getMessage());
         }
     }
+
+    @Scheduled(cron = "0 0 2 * * ?") // Каждый день в 4 часа ночи
+    public void TaskToArchive(){
+        try {
+            List<Announcement> announcements = this.repository.findAllByStatus(AStatus.WaitPublish);
+
+            for (Announcement announcement : announcements){
+                if (announcement.getDeleteDate().equals(LocalDate.now())){
+                    announcement.setStatus(AStatus.Archive);
+                    this.repository.save(announcement);
+
+                    System.out.println("Объявление перенесено в архив: " + announcement.getUUID());
+                }
+            }
+
+            System.out.println("Объявления в дату - " + LocalDate.now() + ", успешно удалены");
+        }catch (Exception err){
+            System.err.println("Ошибка при переносе объявлений в архив - " + err.getMessage());
+        }
+    }
 }

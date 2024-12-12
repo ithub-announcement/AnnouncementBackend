@@ -1,7 +1,6 @@
 package it.college.AnnouncementBackend.core.domain.model.entity;
 
 import it.college.AnnouncementBackend.core.domain.model.enums.AStatus;
-import it.college.AnnouncementBackend.routes.tags.models.Tag;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
