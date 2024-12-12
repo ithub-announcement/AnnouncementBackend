@@ -11,4 +11,6 @@ import java.util.UUID;
 @Repository
 public interface AnnouncementRepository extends JpaRepository<Announcement, UUID> {
     List<Announcement> findAllByAuthorIDAndStatus(String authorID, AStatus status);
+
+    List<Announcement> findAllByStatus(AStatus status);
 }

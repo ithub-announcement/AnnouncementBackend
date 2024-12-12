@@ -38,6 +38,9 @@ dependencies {
 	implementation 'org.postgresql:postgresql:42.7.2'
 	runtimeOnly 'org.postgresql:postgresql'
 
+	implementation 'com.h2database:h2'
+	implementation 'org.springframework.boot:spring-boot-starter-scheduling'
+
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 

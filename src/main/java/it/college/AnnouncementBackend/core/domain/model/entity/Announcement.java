@@ -42,10 +42,10 @@ public class Announcement {
     private List<Long> tagIds;
 
     @Column(name = "publish_date")
-    private LocalDateTime publishDate;
+    private LocalDate publishDate;
 
     @Column(name = "delete_date")
-    private LocalDateTime deleteDate;
+    private LocalDate deleteDate;
 
     @Column
     private String reason;
