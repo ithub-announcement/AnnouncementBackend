@@ -21,14 +21,14 @@ public class ReviewController {
     public ResponseEntity sentToReview(@RequestHeader("Authorization") String authorization,
                                        @RequestParam("uuid") String uuid,
                                        @RequestBody ReviewPayload payload){
-        return null;
+        return this.service.sentToReview(authorization, uuid, payload);
     }
 
     @PostMapping("/accept/{uuid}")
     @Operation(summary = "Принять черновик")
     public ResponseEntity accept(@RequestHeader("Authorization") String authorization,
                                  @RequestParam("uuid") String uuid){
-        return null;
+        return this.service.acceptToPublish(authorization, uuid);
     }
 
     @PostMapping("/reject/{uuid}")
@@ -36,6 +36,6 @@ public class ReviewController {
     public ResponseEntity reject(@RequestHeader("Authorization") String authorization,
                                  @RequestParam("uuid") String uuid,
                                  @RequestBody String reason){
-        return null;
+        return this.service.rejectToPublish(authorization, uuid, reason);
     }
 }

@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -35,8 +36,16 @@ public class Announcement {
     @Column
     private AStatus status;
 
-    @ManyToMany
-    private List<Tag> tags;
+    @ElementCollection
+    @CollectionTable(name = "announcement_tags", joinColumns = @JoinColumn(name = "announcement_id"))
+    @Column(name = "tag_id")
+    private List<Long> tagIds;
+
+    @Column(name = "publish_date")
+    private LocalDateTime publishDate;
+
+    @Column(name = "delete_date")
+    private LocalDateTime deleteDate;
 
     @Column
     private String reason;

@@ -4,5 +4,6 @@ public enum AStatus {
     Draft,
     Archive,
     Public,
-    Review
+    Review,
+    WaitPublish
 }
