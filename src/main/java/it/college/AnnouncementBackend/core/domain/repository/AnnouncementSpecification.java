@@ -12,6 +12,10 @@ public class AnnouncementSpecification {
         return (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("status"), AStatus.Public);
     }
 
+    public static Specification<Announcement> statusIsReview() {
+        return (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("status"), AStatus.Review);
+    }
+
     public static Specification<Announcement> search(String search) {
         return (root, query, criteriaBuilder) -> {
             if (search != null && !search.isEmpty()) {

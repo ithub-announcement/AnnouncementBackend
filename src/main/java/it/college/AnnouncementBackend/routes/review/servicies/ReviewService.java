@@ -1,13 +1,20 @@
 package it.college.AnnouncementBackend.routes.review.servicies;
 
 import it.college.AnnouncementBackend.core.config.Mapper;
+import it.college.AnnouncementBackend.core.domain.dto.SortDto;
 import it.college.AnnouncementBackend.core.domain.model.entity.Announcement;
 import it.college.AnnouncementBackend.core.domain.model.enums.AStatus;
 import it.college.AnnouncementBackend.core.domain.repository.AnnouncementRepository;
+import it.college.AnnouncementBackend.core.domain.repository.AnnouncementSpecification;
 import it.college.AnnouncementBackend.routes.review.model.ReviewPayload;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -31,6 +38,45 @@ public class ReviewService {
     private final AnnouncementRepository repository;
 
     private final Mapper mapper;
+
+    /**
+     * Получить все черновики находящиеся на проверке
+     */
+
+    public ResponseEntity getAllReview(String token, SortDto dto){
+        try {
+            // Проверяем, если dto равно null, возвращаем все объявления со статусом Public
+            if (dto == null) {
+                return new ResponseEntity<>(repository.findAllByStatus(AStatus.Public), HttpStatus.OK);
+            }
+
+            // Создаем объект Pageable для пагинации и сортировки по publishDate
+            Pageable pageable = PageRequest.of(dto.getPage(), dto.getLimit(),
+                    "asc".equalsIgnoreCase(dto.getSortDir()) ? Sort.by("publishDate").ascending() : Sort.by("publishDate").descending());
+
+            // Создаем спецификацию для поиска
+            Specification<Announcement> spec = AnnouncementSpecification.search(dto.getSearch());
+
+            // Добавляем фильтрацию по тегам
+            if (dto.getTags() != null && !dto.getTags().isEmpty()) {
+                spec = spec.and(AnnouncementSpecification.tagsIn(dto.getTags()));
+            }
+
+            // Получаем список объявлений со статусом Review с учетом фильтрации и пагинации
+            Page<Announcement> announcements = repository.findAll(spec.and(AnnouncementSpecification.statusIsReview()), pageable);
+
+            return new ResponseEntity<>(announcements.getContent(), HttpStatus.OK);
+        }catch (DataIntegrityViolationException e) {
+            System.err.println("Data: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        } catch (ConstraintViolationException e) {
+            System.err.println("Bad Request: " + e.getMessage());
+            return ResponseEntity.badRequest().build();
+        } catch (Exception e) {
+            System.err.println("Internal Server Error: " + e.getMessage());
+            return ResponseEntity.internalServerError().build();
+        }
+    }
 
     /**
      * Отправить на модерацию

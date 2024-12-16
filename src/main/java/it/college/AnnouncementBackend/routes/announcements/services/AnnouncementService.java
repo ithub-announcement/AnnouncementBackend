@@ -34,6 +34,10 @@ import org.springframework.stereotype.Service;
 public class AnnouncementService {
     private final AnnouncementRepository repository;
 
+    /**
+     * Получить все объявления по сортировке: поиск по контенту или автору. По возростанию
+     */
+
     @Transactional(readOnly = true)
     public ResponseEntity findAllWithSort(SortDto dto) {
         try {

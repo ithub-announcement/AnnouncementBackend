@@ -2,6 +2,7 @@ package it.college.AnnouncementBackend.routes.review.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import it.college.AnnouncementBackend.core.domain.dto.SortDto;
 import it.college.AnnouncementBackend.routes.review.model.ReviewPayload;
 import it.college.AnnouncementBackend.routes.review.servicies.ReviewService;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,13 @@ import org.springframework.web.bind.annotation.*;
 public class ReviewController {
 
     private final ReviewService service;
+
+    @PostMapping
+    @Operation(summary = "Получить все черновики находящиеся на проверки")
+    public ResponseEntity sentToReview(@RequestHeader("Authorization") String authorization,
+                                       SortDto sortDto){
+        return this.service.getAllReview(authorization, sortDto);
+    }
 
     @PutMapping("/{uuid}")
     @Operation(summary = "Отправить на проверку черновик")
