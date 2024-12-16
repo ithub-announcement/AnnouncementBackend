@@ -1,6 +1,5 @@
 package it.college.AnnouncementBackend.core.domain.dto;
 
-import it.college.AnnouncementBackend.routes.tags.models.Tag;
 import lombok.Data;
 
 import java.util.List;

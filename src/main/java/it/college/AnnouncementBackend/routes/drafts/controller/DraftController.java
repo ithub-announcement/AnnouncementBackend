@@ -16,7 +16,7 @@ public class DraftController {
 
     private final DraftService service;
 
-    @GetMapping
+    @PostMapping("/all")
     @Operation(summary = "Получить все черновики пользователя")
     public ResponseEntity findAllDraftByAuthorId(@RequestHeader("Authorization") String authorization){
         return this.service.findAllDraftByAuthor(authorization);

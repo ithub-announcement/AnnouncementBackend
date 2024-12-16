@@ -1,6 +1,7 @@
 package it.college.AnnouncementBackend.core.domain.model.entity;
 
 import it.college.AnnouncementBackend.core.domain.model.enums.AStatus;
+import it.college.AnnouncementBackend.routes.tags.models.Tag;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -35,10 +36,13 @@ public class Announcement {
     @Column
     private AStatus status;
 
-    @ElementCollection
-    @CollectionTable(name = "announcement_tags", joinColumns = @JoinColumn(name = "announcement_id"))
-    @Column(name = "tag_id")
-    private List<Long> tagIds;
+    @ManyToMany
+    @JoinTable(
+            name = "announcement_tags",
+            joinColumns = @JoinColumn(name = "announcement_id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id")
+    )
+    private List<Tag> tags;
 
     @Column(name = "publish_date")
     private LocalDate publishDate;

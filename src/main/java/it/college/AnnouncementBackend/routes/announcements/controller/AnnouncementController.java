@@ -16,11 +16,10 @@ public class AnnouncementController {
 
     private final AnnouncementService service;
 
-    @GetMapping
+    @PostMapping
     @Operation(summary = "Получить все объявления")
-    public ResponseEntity findAllWithSort(@RequestHeader("Authorization") String authorization,
-                                          @RequestBody SortDto sortDto){
-        return null;
+    public ResponseEntity findAllWithSort(@RequestBody SortDto sortDto){
+        return this.service.findAllWithSort(sortDto);
     }
 
     @PutMapping
