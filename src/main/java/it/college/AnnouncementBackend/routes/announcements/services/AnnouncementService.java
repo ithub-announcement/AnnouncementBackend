@@ -59,7 +59,7 @@ public class AnnouncementService {
             }
 
             // Получаем список объявлений со статусом Public с учетом фильтрации и пагинации
-            Page<Announcement> announcements = repository.findAll(spec.and(AnnouncementSpecification.statusIsPublic()), pageable);
+            Page<Announcement> announcements = repository.findAll(spec.and(AnnouncementSpecification.statusIs(AStatus.Public)), pageable);
 
             return new ResponseEntity<>(announcements.getContent(), HttpStatus.OK);
         } catch (DataIntegrityViolationException e) {

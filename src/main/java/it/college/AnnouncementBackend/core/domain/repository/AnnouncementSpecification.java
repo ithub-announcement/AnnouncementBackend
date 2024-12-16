@@ -8,12 +8,8 @@ import java.util.List;
 
 public class AnnouncementSpecification {
 
-    public static Specification<Announcement> statusIsPublic() {
-        return (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("status"), AStatus.Public);
-    }
-
-    public static Specification<Announcement> statusIsReview() {
-        return (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("status"), AStatus.Review);
+    public static Specification<Announcement> statusIs(AStatus status) {
+        return (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("status"), status);
     }
 
     public static Specification<Announcement> search(String search) {

@@ -63,7 +63,7 @@ public class ReviewService {
             }
 
             // Получаем список объявлений со статусом Review с учетом фильтрации и пагинации
-            Page<Announcement> announcements = repository.findAll(spec.and(AnnouncementSpecification.statusIsReview()), pageable);
+            Page<Announcement> announcements = repository.findAll(spec.and(AnnouncementSpecification.statusIs(AStatus.Review)), pageable);
 
             return new ResponseEntity<>(announcements.getContent(), HttpStatus.OK);
         }catch (DataIntegrityViolationException e) {
