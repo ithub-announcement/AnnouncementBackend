@@ -4,6 +4,7 @@ import it.college.AnnouncementBackend.core.config.Mapper;
 import it.college.AnnouncementBackend.core.domain.model.entity.Announcement;
 import it.college.AnnouncementBackend.core.domain.model.enums.AStatus;
 import it.college.AnnouncementBackend.core.domain.repository.AnnouncementRepository;
+import it.college.AnnouncementBackend.core.domain.service.AuthService;
 import it.college.AnnouncementBackend.routes.drafts.model.DraftPayload;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.exception.ConstraintViolationException;
@@ -33,13 +34,15 @@ public class DraftService {
 
     private final Mapper mapper;
 
+    private final AuthService auth;
+
     /**
      * Получить все черновики одного пользователя
      */
 
     public ResponseEntity findAllDraftByAuthor(String token){
         try {
-            return new ResponseEntity<>(this.repository.findAllByAuthorIDAndStatus(token, AStatus.Draft), HttpStatus.OK);
+            return new ResponseEntity<>(this.repository.findAllByAuthorIDAndStatus(auth.auth(token), AStatus.Draft), HttpStatus.OK);
         }catch (Exception err){
             err.printStackTrace();
             System.err.println("Ошибка при получение всех черновиков - " + err.getMessage());

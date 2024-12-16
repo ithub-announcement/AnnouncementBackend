@@ -2,6 +2,7 @@ package it.college.AnnouncementBackend.core.domain.service;
 
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
+import io.grpc.StatusRuntimeException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import ru.itcollege.grpc.authentication.AuthenticationServiceGrpc;
@@ -17,15 +18,27 @@ public class AuthService {
     private int port;
 
     public String auth(String token) {
-        ManagedChannel channel = ManagedChannelBuilder.forAddress(this.host, this.port).usePlaintext().build();
+        ManagedChannel channel = ManagedChannelBuilder.forAddress(this.host, this.port)
+                .usePlaintext()
+                .build();
+
         AuthenticationServiceGrpc.AuthenticationServiceBlockingStub stub = AuthenticationServiceGrpc.newBlockingStub(channel);
+        String userId = null;
 
-        // Создаем тело запроса.
-        JWTPayload payload = JWTPayload.newBuilder().setAccess(token).build();
+        try {
+            // Создаем тело запроса.
+            JWTPayload payload = JWTPayload.newBuilder().setAccess(token).build();
 
-        // Отправка запроса и получение пользователя.
-        User current = stub.getUserByAccess(payload);
+            // Отправка запроса и получение пользователя.
+            User current = stub.getUserByAccess(payload);
+            userId = current.getUid();
+        } catch (StatusRuntimeException e) {
+            System.err.println(e.getMessage());
+            // Обработка ошибок (например, можно выбросить новое исключение)
+        } finally {
+            channel.shutdown(); // Закрытие канала
+        }
 
-        return current.getUid();
+        return userId;
     }
 }
