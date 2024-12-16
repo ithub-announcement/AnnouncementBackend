@@ -12,13 +12,18 @@ public class AnnouncementSpecification {
         return (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("status"), AStatus.Public);
     }
 
-    public static Specification<Announcement> search(String searchTerm) {
-        // Реализация метода поиска по строке
+    public static Specification<Announcement> search(String search) {
         return (root, query, criteriaBuilder) -> {
-            if (searchTerm == null || searchTerm.isEmpty()) {
-                return criteriaBuilder.conjunction(); // Возвращает "всегда истину"
+            if (search != null && !search.isEmpty()) {
+                String searchPattern = "%" + search.toLowerCase() + "%";
+
+                // Создаем условие для поиска
+                return criteriaBuilder.or(
+                        criteriaBuilder.like(criteriaBuilder.lower(root.get("jsonContent")), searchPattern),
+                        criteriaBuilder.like(criteriaBuilder.lower(root.get("authorID")), searchPattern)
+                );
             }
-            return criteriaBuilder.like(root.get("jsonContent"), "%" + searchTerm + "%");
+            return criteriaBuilder.conjunction(); // Возвращаем "все", если строка поиска пуста
         };
     }
 
