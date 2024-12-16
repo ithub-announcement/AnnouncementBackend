@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package authentication;
+
+option java_package = "ru.itcollege.grpc.authentication";
+option java_multiple_files = true;
+
+message UIDPayload {
+  string uid = 1;
+}
+
+message JWTPayload {
+  string access = 1;
+}
+
+message User {
+  string uid = 1;
+  string name = 2;
+  string role = 3;
+}
+
+service AuthenticationService {
+  rpc getUserByAccess(JWTPayload) returns (User);
+  rpc getUserByUID(UIDPayload) returns (User);
+}
