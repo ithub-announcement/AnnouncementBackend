@@ -19,6 +19,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -119,7 +120,12 @@ public class ReviewService {
             }
 
             Announcement announcement = optionalAnnouncement.get();
-            announcement.setStatus(AStatus.WaitPublish);
+
+            if (announcement.getPublishDate().equals(LocalDate.now())){
+                announcement.setStatus(AStatus.Public);
+            }else {
+                announcement.setStatus(AStatus.WaitPublish);
+            }
 
             this.repository.save(announcement);
             return ResponseEntity.ok("Успешно одобрено");
