@@ -68,6 +68,7 @@ public class TagService {
                     .collect(Collectors.toList()), HttpStatus.OK);
         } catch (Exception err) {
             System.err.println(err.getMessage());
+            err.printStackTrace();
             return ResponseEntity.internalServerError().build();
         }
     }
@@ -90,8 +91,9 @@ public class TagService {
         } catch (ConstraintViolationException e) {
             System.err.println("Bad Request: " + e.getMessage());
             return ResponseEntity.badRequest().build();
-        } catch (Exception e) {
-            System.err.println("Internal Server Error: " + e.getMessage());
+        } catch (Exception err) {
+            System.err.println("Internal Server Error: " + err.getMessage());
+            err.printStackTrace();
             return ResponseEntity.internalServerError().build();
         }
     }
@@ -116,8 +118,9 @@ public class TagService {
         } catch (ConstraintViolationException e) {
             System.err.println("Bad Request: " + e.getMessage());
             return ResponseEntity.badRequest().build();
-        } catch (Exception e) {
-            System.err.println("Internal Server Error: " + e.getMessage());
+        } catch (Exception err) {
+            err.printStackTrace();
+            System.err.println("Internal Server Error: " + err.getMessage());
             return ResponseEntity.internalServerError().build();
         }
     }
@@ -139,7 +142,9 @@ public class TagService {
         } catch (DataIntegrityViolationException e) {
             System.err.println("Data: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
-        } catch (Exception e) {
+        } catch (Exception err) {
+            System.err.println(err.getMessage());
+            err.printStackTrace();
             return ResponseEntity.internalServerError().build();
         }
     }
@@ -156,6 +161,7 @@ public class TagService {
             return ResponseEntity.notFound().build();
         } catch (Exception err){
             System.err.println(err.getMessage());
+            err.printStackTrace();
             return ResponseEntity.internalServerError().build();
         }
     }

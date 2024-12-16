@@ -42,6 +42,7 @@ public class PublishService {
 
             System.out.println("Объявления в дату - " + LocalDate.now() + ", Выложены успешно");
         }catch (Exception err){
+            err.printStackTrace();
             System.err.println("Ошибка при выставление объявление - " + err.getMessage());
         }
     }
@@ -66,6 +67,7 @@ public class PublishService {
 
             System.out.println("Объявления в дату - " + LocalDate.now() + ", успешно удалены");
         }catch (Exception err){
+            err.printStackTrace();
             System.err.println("Ошибка при переносе объявлений в архив - " + err.getMessage());
         }
     }

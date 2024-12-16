@@ -69,6 +69,7 @@ public class AnnouncementService {
             System.err.println("Bad Request: " + e.getMessage());
             return ResponseEntity.badRequest().build();
         } catch (Exception e) {
+            e.printStackTrace();
             System.err.println("Internal Server Error: " + e.getMessage());
             return ResponseEntity.internalServerError().build();
         }

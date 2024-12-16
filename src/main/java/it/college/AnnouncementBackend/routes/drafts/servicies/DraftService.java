@@ -41,6 +41,7 @@ public class DraftService {
         try {
             return new ResponseEntity<>(this.repository.findAllByAuthorIDAndStatus(token, AStatus.Draft), HttpStatus.OK);
         }catch (Exception err){
+            err.printStackTrace();
             System.err.println("Ошибка при получение всех черновиков - " + err.getMessage());
             return ResponseEntity.internalServerError().build();
         }
@@ -61,6 +62,7 @@ public class DraftService {
             System.err.println("Bad Request: " + e.getMessage());
             return ResponseEntity.badRequest().build();
         } catch (Exception e) {
+            e.printStackTrace();
             System.err.println("Internal Server Error: " + e.getMessage());
             return ResponseEntity.internalServerError().build();
         }
@@ -96,6 +98,7 @@ public class DraftService {
             System.err.println("Bad Request: " + e.getMessage());
             return ResponseEntity.badRequest().build();
         } catch (Exception e) {
+            e.printStackTrace();
             System.err.println("Internal Server Error: " + e.getMessage());
             return ResponseEntity.internalServerError().build();
         }
@@ -116,6 +119,7 @@ public class DraftService {
             System.err.println("Bad Request: " + e.getMessage());
             return ResponseEntity.badRequest().build();
         } catch (Exception e) {
+            e.printStackTrace();
             System.err.println("Internal Server Error: " + e.getMessage());
             return ResponseEntity.internalServerError().build();
         }

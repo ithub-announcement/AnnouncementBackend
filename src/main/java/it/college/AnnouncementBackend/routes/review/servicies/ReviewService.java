@@ -74,6 +74,7 @@ public class ReviewService {
             System.err.println("Bad Request: " + e.getMessage());
             return ResponseEntity.badRequest().build();
         } catch (Exception e) {
+            e.printStackTrace();
             System.err.println("Internal Server Error: " + e.getMessage());
             return ResponseEntity.internalServerError().build();
         }
@@ -103,6 +104,7 @@ public class ReviewService {
             System.err.println("Bad Request: " + e.getMessage());
             return ResponseEntity.badRequest().build();
         } catch (Exception e) {
+            e.printStackTrace();
             System.err.println("Internal Server Error: " + e.getMessage());
             return ResponseEntity.internalServerError().build();
         }
@@ -137,6 +139,7 @@ public class ReviewService {
             return ResponseEntity.badRequest().build();
         } catch (Exception e) {
             System.err.println("Internal Server Error: " + e.getMessage());
+            e.printStackTrace();
             return ResponseEntity.internalServerError().build();
         }
     }
@@ -165,6 +168,7 @@ public class ReviewService {
             System.err.println("Bad Request: " + e.getMessage());
             return ResponseEntity.badRequest().build();
         } catch (Exception e) {
+            e.printStackTrace();
             System.err.println("Internal Server Error: " + e.getMessage());
             return ResponseEntity.internalServerError().build();
         }
