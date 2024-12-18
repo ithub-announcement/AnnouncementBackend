@@ -2,7 +2,6 @@ package it.college.AnnouncementBackend.routes.announcements.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import it.college.AnnouncementBackend.core.domain.dto.SortDto;
 import it.college.AnnouncementBackend.routes.announcements.services.AnnouncementService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,13 +15,17 @@ public class AnnouncementController {
 
     private final AnnouncementService service;
 
-    @PostMapping
+    @GetMapping
     @Operation(summary = "Получить все объявления")
-    public ResponseEntity findAllWithSort(@RequestBody SortDto sortDto){
-        return this.service.findAllWithSort(sortDto);
+    public ResponseEntity findAllWithSort(@RequestParam(defaultValue = "0") int page,
+                                          @RequestParam(defaultValue = "0") int limit,
+                                          @RequestParam(defaultValue = "") String search,
+                                          @RequestParam(defaultValue = "asc") String sort,
+                                          @RequestParam Long[] tags){
+        return this.service.findAllWithSort(page, limit, search, sort, tags);
     }
 
-    @PutMapping
+    @DeleteMapping
     @Operation(summary = "Удалить принудительно")
     public ResponseEntity deleteByUUID(@RequestHeader("Authorization") String authorization,
                                        @RequestBody String uuid){

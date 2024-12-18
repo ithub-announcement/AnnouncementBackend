@@ -16,10 +16,12 @@ import org.springframework.web.bind.annotation.*;
 public class TagController {
     private final TagService service;
 
-    @PostMapping("/all")
+    @GetMapping("/all")
     @Operation(summary = "Получить все тэги")
-    public ResponseEntity findAllTagBySort(@RequestHeader("Authorization") String authorization, @RequestBody SortDto sortDto){
-        return this.service.findAllBySort(sortDto, authorization);
+    public ResponseEntity findAllTagBySort(@RequestHeader("Authorization") String authorization,
+                                           @RequestParam int page,
+                                           @RequestParam int limit){
+        return this.service.findAllBySort(page, limit, authorization);
     }
 
     @PostMapping
