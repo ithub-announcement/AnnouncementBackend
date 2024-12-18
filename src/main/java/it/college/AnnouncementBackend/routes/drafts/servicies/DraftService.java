@@ -4,6 +4,7 @@ import it.college.AnnouncementBackend.core.config.Mapper;
 import it.college.AnnouncementBackend.core.domain.model.entity.Announcement;
 import it.college.AnnouncementBackend.core.domain.model.enums.AStatus;
 import it.college.AnnouncementBackend.core.domain.repository.AnnouncementRepository;
+import it.college.AnnouncementBackend.core.domain.service.AuthService;
 import it.college.AnnouncementBackend.routes.drafts.model.DraftPayload;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.exception.ConstraintViolationException;
@@ -33,13 +34,15 @@ public class DraftService {
 
     private final Mapper mapper;
 
+    private final AuthService auth;
+
     /**
      * Получить все черновики одного пользователя
      */
 
     public ResponseEntity findAllDraftByAuthor(String token){
         try {
-            return new ResponseEntity<>(this.repository.findAllByAuthorIDAndStatus(token, AStatus.Draft), HttpStatus.OK);
+            return new ResponseEntity<>(this.repository.findAllByAuthorIDAndStatus(auth.auth(token), AStatus.Draft), HttpStatus.OK);
         }catch (Exception err){
             err.printStackTrace();
             System.err.println("Ошибка при получение всех черновиков - " + err.getMessage());
@@ -53,8 +56,19 @@ public class DraftService {
 
     public ResponseEntity findDraftByUUID(String token, String uuid){
         try {
-            Optional<Announcement> announcement = this.repository.findById(java.util.UUID.fromString(uuid));
-            return new ResponseEntity(announcement.get(), HttpStatus.OK);
+            Optional<Announcement> OptionalAnnouncement = this.repository.findById(java.util.UUID.fromString(uuid));
+
+            if (OptionalAnnouncement.isEmpty()){
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            }
+
+            Announcement announcement = OptionalAnnouncement.get();
+
+           if (!announcement.getAuthorID().equals(auth.auth(token))) {
+               return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+           }
+
+            return new ResponseEntity(announcement, HttpStatus.OK);
         }catch (DataIntegrityViolationException e) {
             System.err.println("Data: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
@@ -76,15 +90,21 @@ public class DraftService {
         try {
             Optional<Announcement> current = this.repository.findById(UUID.fromString(uuid));
 
+            String author = auth.auth(token);
+
             if (current.isEmpty()){
                 Announcement announcement = mapper.getMapper().map(payload, Announcement.class);
 
                 announcement.setStatus(AStatus.Draft);
                 announcement.setZoneDateTime(LocalDateTime.now());
-                announcement.setAuthorID(token);
+                announcement.setAuthorID(author);
 
                 this.repository.save(announcement);
                 return new ResponseEntity(announcement, HttpStatus.OK);
+            }
+
+            if (!current.get().getAuthorID().equals(author)){
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
             }
 
             current.get().setJsonContent(payload.getJsonContent());
@@ -110,6 +130,12 @@ public class DraftService {
 
     public ResponseEntity deleteDraftByUUID(String token, String uuid){
         try {
+            Announcement announcement = this.repository.findById(UUID.fromString(uuid)).get();
+
+            if (!announcement.getAuthorID().equals(auth.auth(token))){
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            }
+
             this.repository.deleteById(UUID.fromString(uuid));
             return ResponseEntity.ok().build();
         }catch (DataIntegrityViolationException e) {

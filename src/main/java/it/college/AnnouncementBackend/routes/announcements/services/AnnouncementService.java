@@ -19,6 +19,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 /**
  * TODO: Сделать проверку доступа по токену
  */
@@ -39,23 +42,23 @@ public class AnnouncementService {
      */
 
     @Transactional(readOnly = true)
-    public ResponseEntity findAllWithSort(SortDto dto) {
+    public ResponseEntity findAllWithSort(int page, int limit, String search, String sort, Long[]tags) {
         try {
             // Проверяем, если dto равно null, возвращаем все объявления со статусом Public
-            if (dto == null) {
+            if (limit == 0) {
                 return new ResponseEntity<>(repository.findAllByStatus(AStatus.Public), HttpStatus.OK);
             }
 
             // Создаем объект Pageable для пагинации и сортировки по publishDate
-            Pageable pageable = PageRequest.of(dto.getPage(), dto.getLimit(),
-                    "asc".equalsIgnoreCase(dto.getSortDir()) ? Sort.by("publishDate").ascending() : Sort.by("publishDate").descending());
+            Pageable pageable = PageRequest.of(page, limit,
+                    "asc".equalsIgnoreCase(sort) ? Sort.by("publishDate").ascending() : Sort.by("publishDate").descending());
 
             // Создаем спецификацию для поиска
-            Specification<Announcement> spec = AnnouncementSpecification.search(dto.getSearch());
+            Specification<Announcement> spec = AnnouncementSpecification.search(search);
 
             // Добавляем фильтрацию по тегам
-            if (dto.getTags() != null && !dto.getTags().isEmpty()) {
-                spec = spec.and(AnnouncementSpecification.tagsIn(dto.getTags()));
+            if (tags != null && tags.length != 0) {
+                spec = spec.and(AnnouncementSpecification.tagsIn(new ArrayList<Long>(Arrays.asList(tags))));
             }
 
             // Получаем список объявлений со статусом Public с учетом фильтрации и пагинации

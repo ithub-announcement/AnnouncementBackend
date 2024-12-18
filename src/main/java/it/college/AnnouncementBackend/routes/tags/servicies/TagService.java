@@ -44,24 +44,17 @@ public class TagService {
      * Получить все тэги
      */
 
-    public ResponseEntity findAllBySort(SortDto dto, String token) {
+    public ResponseEntity findAllBySort(int page, int limit,  String token) {
         try {
-            if (dto.getLimit() == 0) {
+            if (limit == 0) {
                 List<TagResponse> allTags = this.repository.findAll().stream()
                         .map(this::convertToTagResponse)
                         .collect(Collectors.toList());
                 return new ResponseEntity<>(allTags, HttpStatus.OK);
             }
 
-            PageRequest pageRequest = PageRequest.of(dto.getPage() - 1, dto.getLimit());
+            PageRequest pageRequest = PageRequest.of(page - 1, limit);
 
-            if (!dto.getSearch().isEmpty()) {
-                Specification<Tag> spec;
-                spec = TagSpecification.search(dto.getSearch());
-                return new ResponseEntity<>(this.repository.findAll(spec, pageRequest).getContent().stream()
-                        .map(this::convertToTagResponse)
-                        .collect(Collectors.toList()), HttpStatus.OK);
-            }
 
             return new ResponseEntity<>(this.repository.findAll(pageRequest).getContent().stream()
                     .map(this::convertToTagResponse)

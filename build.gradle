@@ -1,5 +1,6 @@
 plugins {
 	id 'java'
+	id 'com.google.protobuf' version '0.9.4'
 	id 'org.springframework.boot' version '3.3.5'
 	id 'io.spring.dependency-management' version '1.1.6'
 }
@@ -34,15 +35,40 @@ dependencies {
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0'
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-api:2.3.0'
 
+	implementation 'io.grpc:grpc-netty:1.51.0'
+	implementation 'io.grpc:grpc-protobuf:1.51.0'
+	implementation 'io.grpc:grpc-stub:1.51.0'
+
 	compileOnly 'org.projectlombok:lombok'
 
 	annotationProcessor 'org.projectlombok:lombok'
 
-	implementation 'org.postgresql:postgresql:42.7.2'
+	implementation 'org.postgresql:postgresql:42.7.3'
+	runtimeOnly 'org.postgresql:postgresql'
 
-	implementation 'com.h2database:h2'
+	//implementation 'com.h2database:h2'
+	implementation 'javax.annotation:javax.annotation-api:1.3.2'
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+
+protobuf {
+	protoc {
+		artifact = "com.google.protobuf:protoc:3.21.12" // Проверьте последнюю версию
+	}
+	plugins {
+		grpc {
+			artifact = "io.grpc:protoc-gen-grpc-java:1.51.0" // Проверьте последнюю версию
+		}
+	}
+	generateProtoTasks {
+		all().each { task ->
+			task.plugins {
+				grpc {}
+			}
+		}
+	}
 }
 
 tasks.named('test') {
